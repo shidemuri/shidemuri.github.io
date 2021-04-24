@@ -1,0 +1,60 @@
+<head>
+<h2><strong>Webhook Spammer</strong></h2>
+<style>
+.button {
+  background-color: #999999;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  letter-spacing: 0px;
+  word-spacing: 0.4px;
+  color: #FF0000;
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+</style>
+</head>
+it spams a message using a webhook<br><br>
+
+<label for="fname">Webhook Id:</label>
+<input type="text" id="id" name="id"><br><br>
+<label for="fname">Webhook Token:</label>
+<input type="text" id="token" name="token"><br><br>
+Number of times: <input type="text" id="times" name="times"><br><br><br><br>
+<label for="w3review">Message to send:</label><br><br>
+
+<textarea id="msg" name="msg" rows="4" cols="50">
+lol hi @everyone
+</textarea><br><br>
+
+(in case you dont know, the webhook format is https://discord.com/api/webhooks/(webhook id)/(webhook token))
+<br><br>
+
+<script type="text/javascript" src="./discord.stable.min.js"></script>
+<script type="text/javascript">
+  function myFunction(){      
+    const times = document.getElementById("times").value
+    const id = document.getElementById("id").value
+    const token = document.getElementById("token").value
+    const msg = document.getElementById("msg").value
+  	for(let i = 0; i < times; i++){
+  		const client = new Discord.WebhookClient(id, token);
+    	client.send()
+    }
+  }
+</script>
+
+<button onclick="myFunction()" class="button">Send</button>
