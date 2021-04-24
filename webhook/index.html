@@ -36,9 +36,7 @@ it spams a message using a webhook<br><br>
 Number of times: <input type="text" id="times" name="times"><br><br><br><br>
 <label for="w3review">Message to send:</label><br><br>
 
-<textarea id="msg" name="msg" rows="4" cols="50">
-lol hi @everyone
-</textarea><br><br>
+<textarea id="msg" name="msg" rows="4" cols="50" placeholder="hi @everyone"></textarea><br><br>
 
 (in case you dont know, the webhook format is https://discord.com/api/webhooks/(webhook id)/(webhook token))
 <br><br>
@@ -52,7 +50,7 @@ lol hi @everyone
     const msg = document.getElementById("msg").value
   	for(let i = 0; i < times; i++){
   		const client = new Discord.WebhookClient(id, token);
-    	client.send()
+    	client.send(msg)
     }
   }
 </script>
