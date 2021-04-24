@@ -43,6 +43,8 @@ Number of times: <input type="text" id="times" name="times"><br><br><br><br>
 
 <script type="text/javascript" src="./discord.stable.min.js"></script>
 <script type="text/javascript">
+  const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+  
   function myFunction(){      
     const times = document.getElementById("times").value
     const id = document.getElementById("id").value
@@ -50,7 +52,8 @@ Number of times: <input type="text" id="times" name="times"><br><br><br><br>
     const msg = document.getElementById("msg").value
   	for(let i = 0; i < times; i++){
   		const client = new Discord.WebhookClient(id, token);
-    	client.send(msg)
+      
+      sleep(100).then(() => client.send(msg))
     }
   }
 </script>
