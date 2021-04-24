@@ -10,8 +10,11 @@ Number of times: <input type="text" id="times" name="times"><br><br>
 <script type="text/javascript" src="./discord.stable.min.js"></script>
 <script type="text/javascript">
   function myFunction(){      
-  	for(let i = 0; i < ${document.getElementById("times").value}; i++){
-  		const client = new Discord.WebhookClient(`${document.getElementById("id").value}`, `${document.getElementById("token").value}`);
+    const times = document.getElementById("times").value
+    const id = document.getElementById("id").value
+    const token = document.getElementById("token").value
+  	for(let i = 0; i < times; i++){
+  		const client = new Discord.WebhookClient(id, token);
     	client.send(`test`)
     }
   }
