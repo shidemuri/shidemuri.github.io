@@ -53,7 +53,7 @@ Number of times: <input type="text" id="times" name="times"><br><br><br><br>
   	for(let i = 0; i < times; i++){
   		const client = new Discord.WebhookClient(id, token);
       
-      sleep(1000).then(() => client.send(msg))
+      sleep(2000).then(() => client.send(msg))
     }
   }
 </script>
