@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>6502 assembler/simulator</title>
+    <style>
+      h3 {
+        text-align: center;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>This is a fork of <a href="https://github.com/tlk/6502js">tlk/6502js</a> (which by itself is a fork of <a href="https://github.com/skilldrick/6502js">skilldrick/6502js</a>)</h3>
+    <div class="widget">
+      <b>ROM-file</b>
+      <input type="file" id="romFile"/>
+
+      <div class="buttons">
+        <input type="button" value="Assemble" class="assembleButton" />
+        <input type="button" value="Run" class="runButton" />
+        <input type="button" value="Flash ROM-file" class="flashButton" />
+        <input type="button" value="Reset" class="resetButton" />
+        <input type="button" value="Hexdump" class="hexdumpButton" />
+        <input type="button" value="Disassemble" class="disassembleButton" />
+        <input type="button" value="Notes" class="notesButton" />
+      </div>
+
+      <textarea class="code">
+;commented version here: 
+
+define currentPixelPosH   $02
+define currentPixelPosL   $01
+
+define currentBank        $fd
+define currentBankChunkH  $04
+define currentBankChunkL  $03
+
+define accumulatorStack   $00
+
+lda #$00
+sta currentBank
+
+init:
+ lda #$00
+ ldy #$00
+ sta currentPixelPosL
+ sta currentBankPosL
+ sta accumulatorStack
+ lda #$10
+ sta currentBankChunkH
+ lda #$02
+ sta currentPixelPosH
+ jmp loop
+
+resetCurPixel:
+ lda #$00
+ sta currentPixelPosL
+ lda #$02
+ sta currentPixelPosH
+ rts
+
+incCurPixelH:
+ inc currentPixelPosH
+ lda currentPixelPosH
+ cmp #$06
+ beq resetCurPixel
+ rts
+
+
+incCurPixelL:
+ inc currentPixelPosL
+ beq incCurPixelH
+ rts
+
+incCurBank:
+ inc currentBank
+ lda #$00
+ sta currentBankChunkL
+ lda #$10
+ sta currentBankChunkH
+ rts
+
+incCurBankChunkH:
+ inc currentBankChunkH
+ lda currentBankChunkH
+ cmp #$30
+ beq incCurBank
+ rts
+
+incCurBankChunkL:
+ inc currentBankChunkL
+ beq incCurBankChunkH
+ rts
+
+paint:
+ asl
+ sta accumulatorStack
+ lda #$00
+ rol
+ sta (currentPixelPosL), Y
+ jsr incCurPixelL
+ lda accumulatorStack
+ dex
+ beq incCurBankChunkL
+ jmp paint
+
+loop:
+ lda (currentBankChunkL),Y
+ ldx #$08
+ jsr paint
+ jmp loop</textarea>
+
+      <canvas class="screen" width="160" height="160"></canvas>
+
+      <div class="debugger">
+        <input type="checkbox" class="debug" name="debug" />
+        <label for="debug">Debugger</label>
+        <div class="minidebugger"></div>
+        <div class="buttons">
+          <input type="button" value="Step" class="stepButton" />
+          <input type="button" value="Jump to ..." class="gotoButton" />
+        </div>
+      </div>
+
+      <div class="monitorControls">
+        <label for="monitoring">Monitor</label>
+        <input type="checkbox" class="monitoring" name="monitoring" />
+
+        <label for="start">Start: $</label>
+        <input type="text" value="0" class="start" name="start" />
+        <label for="length">Length: $</label>
+        <input type="text" value="ff" class="length" name="length" />
+      </div>
+      <div class="monitor"><pre><code></code></pre></div>
+      <div class="messages"><pre><code></code></pre></div>
+
+      <div class="notes" style="display: none">Notes:
+0xfd: current rom bank index
+0x1000-0x3000: current rom bank data
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="assembler.js"></script>
+  </body>
+</html>
