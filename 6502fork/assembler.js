@@ -288,13 +288,19 @@ function SimulatorWidget(node) {
 
     // Poke a byte, don't touch any registers
     function storeByte(addr, value) {
-      if(addr == 0xfc) return
+      if (addr == 0xfc) return;
+      if (addr == 0xf0) {
+        setTimeout(() => {
+          set(addr, value & 0xff);
+        }, (1/20)*100);
+        return;
+      }
       set(addr, value & 0xff);
       if ((addr >= 0x200) && (addr <= 0x5ff)) {
         display.updatePixel(addr);
       }
-      if(addr==0xfd){
-        updateRomBank()
+      if (addr == 0xfd) {
+        updateRomBank();
       }
     }
 
