@@ -12,7 +12,11 @@
 ;0xfd:            current rom bank index
 ;0x1000 - 0x3000: current rom bank data
 
-;also the original emulator runs 97 instructions every 15ms, this one (should) run 1135 instructions every 0ms (setTimeout though)
+;also the original emulator runs 97 instructions every 15ms, this one (should) run as much instructions per second as possible 
+;(i also implemented some sort of "vsync" feature, so the video player can actually run 20fps,
+;because otherwise it would just freeze the current tab)
+
+define vsync              $f0
 
 define currentPixelPosH   $02
 define currentPixelPosL   $01
@@ -43,6 +47,7 @@ resetCurPixel:                  ;resets the pixel cursor back to top left
  sta currentPixelPosL
  lda #$02
  sta currentPixelPosH
+ sta vsync                      ;halts execution for 50ms
  rts
 
 incCurPixelH:                   ;increases the high byte of the pixel cursor
