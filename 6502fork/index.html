@@ -29,6 +29,8 @@
       <textarea class="code">
 ;commented version here: https://github.com/shidemuri/shidemuri.github.io/blob/main/6502fork/6502_video_player.asm
 
+define vsync              $f0
+
 define currentPixelPosH   $02
 define currentPixelPosL   $01
 
@@ -58,6 +60,7 @@ resetCurPixel:
  sta currentPixelPosL
  lda #$02
  sta currentPixelPosH
+ sta vsync
  rts
 
 incCurPixelH:
