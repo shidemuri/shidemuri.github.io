@@ -286,13 +286,16 @@ function SimulatorWidget(node) {
       return get(addr) + (get(addr + 1) << 8);
     }
 
+    let bleh = Date.now()
+
     // Poke a byte, don't touch any registers
     function storeByte(addr, value) {
       if (addr == 0xfc) return;
       if (addr == 0xf0) {
         setTimeout(() => {
           set(addr, value & 0xff);
-        }, (1/20)*100);
+        }, Math.max((1/20-(bleh-Date.now()))*1000),0);
+        bleh = Date.now()
         return;
       }
       set(addr, value & 0xff);
