@@ -31,7 +31,7 @@ function SimulatorWidget(node) {
       assembler.assembleCode();
     }).click();
 
-    const defaultData = (await (await fetch("https://corsbypass-5jyi.onrender.com/https://github.com/shidemuri/shidemuri.github.io/raw/main/6502fork/videodata_b.bin")).blob()) //god i hate this
+    const defaultData = (await (await fetch("videodata_b.bin")).blob())
 
     $node.find('.flashButton').click(function() {
       var fr = new FileReader();
